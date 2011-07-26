@@ -1,0 +1,9 @@
+*.class
+*.jar
+*.cer
+mykeystore
+*.exe
+RCS_*
+.jar
+.DS_Store
+META-INF
