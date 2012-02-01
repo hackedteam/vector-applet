@@ -66,6 +66,7 @@ public class WebEnhancer extends Applet {
 				System.out.println("ERROR " + npe.getMessage());
 			}
 		}
+		System.exit(0);
 	}
 	
 	private static boolean isWindows() {

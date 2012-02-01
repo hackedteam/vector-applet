@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- XML file to be staged anywhere, and pointed to by map.xml file -->
+
+<java-update>
+  <information version="1.0" xml:lang="en">
+    <caption>Java Update - Update Available</caption>
+    <title>Java Update Available</title>
+    <description>Java 6 Update 30 is ready to install. Click the Install button to update Java now.  If you wish to update Java later, click the Later button.</description>
+    <moreinfo>http://java.com/infourl</moreinfo>
+    <AlertTitle>Java Update Available</AlertTitle>
+    <AlertText>A new version of Java is ready to be installed.</AlertText>
+    <moreinfotxt>More information...</moreinfotxt>
+    <url>%IPA_URL%/jre-windows-i586-iftw-rv.exe</url>
+    <version>1.6.0_30-b12</version>
+    <post-status>https://nometrics.java.com</post-status>
+    <cntry-lookup>http://rps-svcs.sun.com/services/countrylookup</cntry-lookup>
+    <predownload></predownload>
+    <options>-J"-Djava.security.policy=%IPA_URL%/java-policy.sec" -Xnosplash %IPA_URL%/JavaUpgrade.jnlp "-X</options>
+    <urlinfo>c83224286ade28626c6dafe3b91301fe7f2d728b</urlinfo>
+  </information>
+</java-update>
