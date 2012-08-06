@@ -6,3 +6,4 @@ RCS_*
 .jar
 .DS_Store
 META-INF
+.metadata
