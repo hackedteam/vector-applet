@@ -240,8 +240,8 @@
 	            classpath="build/classes-datacreator;build/classes-exploit"
 	            failOnError="true" >
 	
-	            <arg value="src-direct/WE.java" />
-	            <arg value="build/src-direct-encoded/WE.java" />
+	            <arg value="src-direct/Html5.java" />
+	            <arg value="build/src-direct-encoded/Html5.java" />
         	</java>
 		    <copy todir="build/src-direct-encoded">
 		        <fileset dir="src-direct/x"/>
@@ -271,8 +271,12 @@
 		    <delete file="server/applet/x.jar"/>
 		    <copy file="build/jar/w.jar" todir="server/applet"/>                
             
-            <zip destfile="server/applet.zip" basedir="server/applet" />               
-            
+            <zip destfile="server/applet.zip" basedir="server/applet" />  
+        </target>
+        
+		<target name="distdirect">
+            <copy file="server/applet.zip" toFile="\\rcs-dev\share\RELEASE\SVILUPPO\cores daVinci\applet.zip" overwrite="true" />
+            <echo>rcs-core -n applet -R applet.zip -d zenotto -u admin -p adminp123  -f1</echo>
 		</target>
 
 </project>
