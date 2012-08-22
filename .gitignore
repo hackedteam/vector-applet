@@ -1,9 +1,7 @@
 *.class
-*.jar
 *.cer
 mykeystore
 RCS_*
-.jar
 .DS_Store
 META-INF
 .metadata
