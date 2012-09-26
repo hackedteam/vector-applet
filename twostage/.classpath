@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="x/CFT.java|x/Context_close_Caller.java|x/MyHashSet.java|x/MyXMLDecoder.java|x/PrivilegedURLClassLoader.java|x/XMLDecoderExploit.java|x/XApplet.java|x/EC.java" kind="src" path="src-exploit"/>
+	<classpathentry kind="lib" path="lib/asm-all-3.3.1.jar"/>
+	<classpathentry kind="src" path="src-datacreator"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_33"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

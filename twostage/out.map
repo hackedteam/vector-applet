@@ -1,0 +1,6 @@
+Html5 -> Html5:
+    java.lang.String OS_NAME -> a
+    void init() -> init
+    byte[] toByteArray(java.io.InputStream) -> a
+x.Strings -> a.a:
+    java.lang.String dec(java.lang.String) -> a
