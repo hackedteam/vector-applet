@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Encrypted Classes holder, duplicated here with functions to write during serialize.
+ * Encrypted Classes holder, just the deserializing part.
  */
 public class EC implements Serializable {
 

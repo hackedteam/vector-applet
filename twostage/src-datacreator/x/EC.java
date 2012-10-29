@@ -12,6 +12,7 @@ import java.util.Properties;
 
 import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerImpl;
 
 /**
  * Encrypted Classes holder, duplicated here with functions to write during serialize.
@@ -77,12 +78,12 @@ public class EC implements Serializable {
 	}
 		     
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-//    	TemplatesImpl templatesImpl = (TemplatesImpl) in.readObject();
-    	Object templatesImpl = in.readObject();
+    	TemplatesImpl templatesImpl = (TemplatesImpl) in.readObject();
+//    	Object templatesImpl = in.readObject();
     	try {
     		// This instantiates the ClassFindingTranslet
-//			TransformerImpl impl = (TransformerImpl) templatesImpl.newTransformer();
-			Object impl = templatesImpl.getClass().getDeclaredMethod("newTransformer").invoke(templatesImpl);
+			TransformerImpl impl = (TransformerImpl) templatesImpl.newTransformer();
+//			Object impl = templatesImpl.getClass().getDeclaredMethod("newTransformer").invoke(templatesImpl);
 			t = impl.getClass().getMethod("getParameter",String.class).invoke(impl, "x");
 		} catch (Exception e) {
 			throw new RuntimeException("Blah",e);

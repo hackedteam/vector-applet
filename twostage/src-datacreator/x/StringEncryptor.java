@@ -18,6 +18,8 @@ public class StringEncryptor {
 //		System.out.println(x.Strings.dec("ufyu"));
 //		
 		encodeFile(args[0],args[1]);
+
+
 //        System.out.println(x.Strings.dec("ufyu")+2+x.Strings.dec("Qfufs"));
 //        System.out.println(encodedContents("System.out.println(\"text\"+2+\"Peter\")"));
 //		
@@ -41,7 +43,7 @@ public class StringEncryptor {
         Matcher m = p.matcher(contents);
         int delta = 0;
         while( m.find() ) {
-        	System.out.println("encoding string "+ m.start()+" "+m.end());
+        	System.out.println(m.start()+" "+m.end());
         	String start = contents.substring(0,m.start()+delta);
         	String text = contents.substring(m.start()+delta+1,m.end()+delta-1);
         	String end = contents.substring(m.end()+delta);

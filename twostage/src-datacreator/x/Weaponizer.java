@@ -11,7 +11,7 @@ public class Weaponizer {
 			System.out.println("USAGE: Weaponizer <basedir> <outputfile> (<class>)+");
 		}
 		EC classes = new EC();
-		classes.setBaseDirectory(args[0]);
+		classes.setBaseDirectory(args[0]); 
 		for( int i=2; i<args.length; i++ ) {
      		classes.add(args[i]);
 		}
