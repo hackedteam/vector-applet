@@ -143,7 +143,7 @@ public class XAppletW extends JApplet {
 			return name;
 		} catch (Exception e) {
 			debug(e.toString());
-			return x.Strings.dec("jotubmmfs");
+			return x.Strings.dec("jotubmmfs/ebu");
 		}
 
 	}
